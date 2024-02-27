@@ -72,9 +72,10 @@ class Item(Generic):
                 url=__WFM_API_BASE_URL__+"/items/"+url_name,
             )
 
-            # ┌──▶ 200 OK - item found; set all attributes
+            # ┌──▶ 200 OK - item found; set all attributes, set non-partial
             if response.status_code == 200:
                 self._attributes = response.json()["payload"]["item"]
+                self._partial = False
 
             # ┌──▶ Any other status code is an error, so raise an exception
             else:
