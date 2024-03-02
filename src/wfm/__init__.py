@@ -1,7 +1,17 @@
-# === DEPENDENCIES =====================================================================================================
-# --- External dependencies --------------------------------------------------------------------------------------------
-import json  # JSON library is used to parse API calls
-import requests  # Requests library is used to make API calls
+# ███ GLOBALS ██████████████████████████████████████████████████████████████████████████████████████████████████████████
+__WFM_API_BASE_URL__ = "https://api.warframe.market/v1"  # ───▶ API base URL
 
-# --- Internal dependencies --------------------------------------------------------------------------------------------
-from classes import *  # Classes for this library :)
+
+# ███ LINKING ██████████████████████████████████████████████████████████████████████████████████████████████████████████
+from .classes import *  # Classes for this library :)
+
+# ▓▓▓ SUBMODULES ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+from src.wfm import auth
+#import items
+#import profile
+#import lich
+#import sister
+#import riven
+#import misc
+#import auction
+
