@@ -111,11 +111,11 @@ class Item(Generic):
 
             # ┌──▶ Any other status code is an error, so raise an exception
             else:
-                raise Exception(exceptions.API_ERROR + response.text)
+                raise exceptions.ApiException(exceptions.API_ERROR + response.text)
 
         # ┌──▶ If _attributes is improperly set, raise an exception
         else:
-            raise KeyError(exceptions.ITEM_INCORRECTLY_INITIALIZED_ERROR)
+            raise exceptions.ItemException(exceptions.ITEM_INCORRECTLY_INITIALIZED_ERROR)
 
     def get_item_data(self) -> dict:
         # └──▶ Get item data
@@ -142,5 +142,5 @@ class Item(Generic):
 
         # ┌──▶ If item_set_data is not set
         else:
-            raise KeyError(exceptions.ITEM_IS_PARTIAL_ERROR)
+            raise exceptions.ItemException(exceptions.ITEM_IS_PARTIAL_ERROR)
 
