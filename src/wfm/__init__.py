@@ -3,15 +3,14 @@ __WFM_API_BASE_URL__ = "https://api.warframe.market/v1"  # ───▶ API base
 
 
 # ███ LINKING ██████████████████████████████████████████████████████████████████████████████████████████████████████████
-from .classes import *  # Classes for this library :)
+from .classes import *
+from .exceptions import *
 
 # ▓▓▓ SUBMODULES ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-from src.wfm import auth
-#import items
-#import profile
-#import lich
-#import sister
-#import riven
-#import misc
-#import auction
-
+import src.wfm.auction
+import src.wfm.auth
+import src.wfm.items
+import src.wfm.lich
+import src.wfm.misc
+import src.wfm.profile
+import src.wfm.sister

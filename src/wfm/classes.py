@@ -1,6 +1,11 @@
+# ███ CLASSES ██████████████████████████████████████████████████████████████████████████████████████████████████████████
+# └──▶ This file defines this module's classes.
+
+
 # ███ DEPENDENCIES █████████████████████████████████████████████████████████████████████████████████████████████████████
 import requests
 from src.wfm import __WFM_API_BASE_URL__
+from src.wfm import exceptions
 from typing import Self
 
 
@@ -19,6 +24,14 @@ class Generic:
         self._attributes: dict = {}  # ───▶ Generic attributes
         self._partial: bool = True  # ───▶ Whether generic is partial or not (Partial types may arise, for example,
         #                                  when items are returned in a list)
+
+    # ▒▒▒ Get item ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+    def __getitem__(self,
+                    attribute: str
+                    ):
+        # └──▶ Get something from self._attributes
+
+        return self._attributes[attribute]
 
     # ▒▒▒ Attributes interface ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
     def get_attributes(self) -> dict:
@@ -59,14 +72,6 @@ class User(Generic):
 class Item(Generic):
     # └──▶ Game item class
 
-    # ┌──▶ Error messages
-    _INCORRECTLY_INITIALIZED_ERROR = ("Item is incorrectly initialized. If this class was most recently created or "
-                                      "initialized by a warframe-market-api function or method, please open an issue on"
-                                      " GitHub.")
-    _NOT_FOUND_ERROR = ("Requested item was not found. No matching url_name was found. If this class was most recently "
-                        "initialized by a warframe-market-api function or method, please open an issue on GitHub.")
-    _IS_PARTIAL_ERROR = "This item appears to only be partially initialized. Please run <Item>.update() to fix this."
-
     def update(self) -> Self:
         # └──▶ Update or turn partial to full
 
@@ -106,11 +111,11 @@ class Item(Generic):
 
             # ┌──▶ Any other status code is an error, so raise an exception
             else:
-                raise KeyError(self._NOT_FOUND_ERROR)
+                raise Exception(exceptions.API_ERROR + response.text)
 
         # ┌──▶ If _attributes is improperly set, raise an exception
         else:
-            raise KeyError(self._INCORRECTLY_INITIALIZED_ERROR)
+            raise KeyError(exceptions.ITEM_INCORRECTLY_INITIALIZED_ERROR)
 
     def get_item_data(self) -> dict:
         # └──▶ Get item data
@@ -123,7 +128,7 @@ class Item(Generic):
 
         # ┌──▶ Raise exception if incorrectly set
         else:
-            raise KeyError(self._IS_PARTIAL_ERROR)
+            raise KeyError(exceptions.ITEM_IS_PARTIAL_ERROR)
 
     def get_set_data(self) -> list:
         # └──▶ Get item data, accounting for sets
@@ -137,5 +142,5 @@ class Item(Generic):
 
         # ┌──▶ If item_set_data is not set
         else:
-            raise KeyError(self._INCORRECTLY_INITIALIZED_ERROR)
+            raise KeyError(exceptions.ITEM_IS_PARTIAL_ERROR)
 

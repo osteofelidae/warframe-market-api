@@ -140,6 +140,20 @@ class TestItemClass(unittest.TestCase):
                          i._attributes["items_in_set"])
 
 
+class TestItemSubmodule(unittest.TestCase):
+    # └──▶ Test wfm.items submodule
+
+    def test_get_all_items(self):
+        # └──▶ Test wfm.items.get_all_items()
+
+        # ┌──▶ Perform function
+        i = wfm.items.get_all_items()
+
+        # ┌──▶ Test example item
+        self.assertEqual([item for item in i if item["id"] == "54aae292e7798909064f1575"][0]["url_name"],
+                         "secura_dual_cestra")
+
+
 # ███ RUN ██████████████████████████████████████████████████████████████████████████████████████████████████████████████
 if __name__ == '__main__':
     unittest.main()
