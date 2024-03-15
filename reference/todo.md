@@ -17,7 +17,7 @@
    14. AuctionEntry (maybe merge into Auction?)
    15. AuctionBid (maybe merge into Auction?)
    16. Item
-   17. Order
+   17. Order (seems ok to leave blank)
    18. DropSourceData (maybe merge into Item?)
    19. DropData (maybe merge into DropSource?)
    20. ~~NpcDropData~~ (merge into DropData)
