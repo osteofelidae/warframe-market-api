@@ -144,6 +144,18 @@ class TestItemClass(unittest.TestCase):
         self.assertEqual(i.get_set_data(),
                          i._attributes["items_in_set"])
 
+    def test_get_orders(self):
+        # └──▶ Test wfm.Item.get_set_data()
+
+        # ┌──▶ Set up test item
+        partial_attributes = {"url_name": "mirage_prime_blueprint"}
+        i = src.wfm.items.Item()
+        i._update_attributes(partial_attributes)
+        o = i.get_orders()
+
+        # ┌──▶ Test example order attribute exists
+        self.assertTrue(o[0]["order_type"])
+
 
 class TestItemSubmodule(unittest.TestCase):
     # └──▶ Test wfm.items submodule

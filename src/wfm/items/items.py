@@ -5,8 +5,6 @@
 # ███ DEPENDENCIES █████████████████████████████████████████████████████████████████████████████████████████████████████
 import requests
 from src.wfm import __WFM_API_BASE_URL__, Generic, exceptions
-from src.wfm import exceptions
-from src.wfm import classes
 from typing import Self
 
 
@@ -15,6 +13,17 @@ from typing import Self
 # ▓▓▓ Item class ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 class Item(Generic):
     # └──▶ Game item class
+
+    # ▒▒▒ Constructor ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+    def __init__(self,
+                 url_name=None
+                 ):
+
+        # ┌──▶ Initialize super
+        super().__init__()
+
+        # ┌──▶ Set url name
+        self._attributes["url_name"] = url_name
 
     # ▒▒▒ Data methods ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
     def update(self) -> Self:
@@ -89,7 +98,52 @@ class Item(Generic):
         else:
             raise exceptions.ItemException(exceptions.ITEM_IS_PARTIAL_ERROR)
 
-    # ▒▒▒ Item-specific methods ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+    # ▒▒▒ Item-related methods ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+    def get_orders(self):
+
+        # ┌──▶ Fetch url_name, or None if unset.
+        url_name = self._attributes.get("url_name")
+
+        # ┌──▶ If url_name is set
+        if url_name is not None:
+
+            endpoint = ""
+
+            # ┌──▶ Get orders
+            response = requests.get(
+                url=__WFM_API_BASE_URL__ + "/items/" + url_name + "/orders"
+            )
+
+            # ┌──▶ 200 OK - orders retrieved
+            if response.status_code == 200:
+
+                # ┌──▶ Extract orders from payload
+                orders_raw = response.json()["payload"]["orders"]
+
+                orders = []  # ───▶ List of order objects
+
+                # ┌──▶ Encapsulate orders from order objects
+                for order_raw in orders_raw:
+                    order = Order()
+                    order._set_attributes(order_raw)
+                    orders.append(order)
+
+                # ┌──▶ Return orders
+                return orders
+
+            # ┌──▶ Any other status code is an error, so raise an exception
+            else:
+                raise exceptions.ApiException(exceptions.API_ERROR + response.text)
+
+        # ┌──▶ If _attributes is improperly set, raise an exception
+        else:
+            raise exceptions.ItemException(exceptions.ITEM_INCORRECTLY_INITIALIZED_ERROR)
+
+
+# ▓▓▓ Order class ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+class Order(Generic):
+    # └──▶ Game order class
+    pass
 
 
 # ███ FUNCTIONS ████████████████████████████████████████████████████████████████████████████████████████████████████████
